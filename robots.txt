@@ -1,0 +1,52 @@
+User-agent: *
+Allow: /
+
+# Disallow admin areas (clean URLs)
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /pmlogin
+Disallow: /leads
+Disallow: /quotes
+Disallow: /invoices
+Disallow: /analytics
+Disallow: /settings
+Disallow: /test-email
+Disallow: /create-admin
+Disallow: /debug-db
+
+# Disallow system files
+# Remove or comment out this line: Disallow: /*.php$
+Disallow: /config.php
+Disallow: /router.php
+Disallow: /includes/
+Disallow: /vendor/
+Disallow: /.env
+Disallow: /.git
+
+# Allow public pages (clean URLs)
+Allow: /about
+Allow: /services
+Allow: /contact
+Allow: /quote
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /disclaimer
+Allow: /cookie-policy
+Allow: /thank-you
+
+# Allow public access pages
+Allow: /estimate
+Allow: /invoice
+
+# Allow assets
+Allow: /assets/
+
+# Allow Google's AdSense bot to crawl the site
+User-agent: AdsBot-Google
+Allow: /
+
+# Sitemap location
+Sitemap: https://packersanmovers.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
