@@ -188,25 +188,157 @@ INSERT INTO statuses (entity_type, status_key, status_label, status_color, sort_
 INSERT INTO users (username, email, password_hash, role, is_admin) VALUES
 ('admin', 'admin@packersanmovers.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 1);
 
--- Insert default settings (empty for configuration)
+-- Cashfree Orders table for payment tracking
+CREATE TABLE cashfree_orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(100) UNIQUE NOT NULL,
+    cf_order_id VARCHAR(100),
+    customer_email VARCHAR(255) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) DEFAULT 'INR',
+    status VARCHAR(20) DEFAULT 'PENDING',
+    payment_method VARCHAR(50),
+    cf_payment_id VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Payment Refunds table
+CREATE TABLE payment_refunds (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(100) NOT NULL,
+    refund_id VARCHAR(100) UNIQUE NOT NULL,
+    cf_refund_id VARCHAR(100),
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'PENDING',
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES cashfree_orders(order_id) ON DELETE CASCADE
+);
+
+-- Subscription Plans table for SaaS
+CREATE TABLE subscription_plans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plan_name VARCHAR(100) NOT NULL,
+    plan_type VARCHAR(20) NOT NULL DEFAULT 'monthly',
+    price DECIMAL(10,2) NOT NULL,
+    features JSON,
+    max_leads INT DEFAULT 100,
+    max_quotes INT DEFAULT 50,
+    max_invoices INT DEFAULT 25,
+    max_users INT DEFAULT 5,
+    storage_limit_gb INT DEFAULT 1,
+    is_popular TINYINT(1) DEFAULT 0,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Organizations table for SaaS multi-tenancy
+CREATE TABLE organizations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    org_name VARCHAR(200) NOT NULL,
+    org_slug VARCHAR(100) UNIQUE NOT NULL,
+    domain VARCHAR(100),
+    owner_email VARCHAR(100) NOT NULL,
+    owner_phone VARCHAR(20),
+    address TEXT,
+    city VARCHAR(100),
+    state VARCHAR(100),
+    country VARCHAR(50) DEFAULT 'India',
+    subscription_plan_id INT,
+    subscription_status VARCHAR(20) DEFAULT 'active',
+    subscription_start_date DATE,
+    subscription_end_date DATE,
+    trial_end_date DATE,
+    last_payment_date DATE,
+    next_billing_date DATE,
+    total_paid DECIMAL(10,2) DEFAULT 0,
+    settings JSON,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (subscription_plan_id) REFERENCES subscription_plans(id)
+);
+
+-- Subscription transactions table
+CREATE TABLE subscription_transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    organization_id INT NOT NULL,
+    subscription_id VARCHAR(100),
+    cf_subscription_id VARCHAR(100),
+    plan_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) DEFAULT 'INR',
+    billing_cycle VARCHAR(20),
+    status VARCHAR(20) DEFAULT 'pending',
+    payment_date DATE,
+    next_billing_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE CASCADE,
+    FOREIGN KEY (plan_id) REFERENCES subscription_plans(id)
+);
+
+-- Webhook Events table for tracking
+CREATE TABLE webhook_events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_type VARCHAR(50) NOT NULL,
+    event_data JSON,
+    order_id VARCHAR(100),
+    subscription_id VARCHAR(100),
+    processed TINYINT(1) DEFAULT 0,
+    processing_attempts INT DEFAULT 0,
+    error_message TEXT,
+    received_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processed_at TIMESTAMP NULL
+);
+
+-- Add organization_id to existing tables for multi-tenancy
+ALTER TABLE users ADD COLUMN organization_id INT DEFAULT NULL;
+ALTER TABLE leads ADD COLUMN organization_id INT DEFAULT NULL;
+ALTER TABLE quotes ADD COLUMN organization_id INT DEFAULT NULL;
+ALTER TABLE invoices ADD COLUMN organization_id INT DEFAULT NULL;
+ALTER TABLE expenses ADD COLUMN organization_id INT DEFAULT NULL;
+
+-- Add foreign key constraints
+ALTER TABLE users ADD FOREIGN KEY (organization_id) REFERENCES organizations(id);
+ALTER TABLE leads ADD FOREIGN KEY (organization_id) REFERENCES organizations(id);
+ALTER TABLE quotes ADD FOREIGN KEY (organization_id) REFERENCES organizations(id);
+ALTER TABLE invoices ADD FOREIGN KEY (organization_id) REFERENCES organizations(id);
+ALTER TABLE expenses ADD FOREIGN KEY (organization_id) REFERENCES organizations(id);
+
+-- Insert default subscription plans
+INSERT INTO subscription_plans (plan_name, plan_type, price, features, max_leads, max_quotes, max_invoices, max_users, storage_limit_gb, is_popular) VALUES
+('Starter Monthly', 'monthly', 999.00, '["Lead Management", "Quote Generation", "Basic Reports", "Email Support"]', 100, 50, 25, 3, 1, 0),
+('Professional Monthly', 'monthly', 1999.00, '["All Starter Features", "Invoice Management", "Advanced Analytics", "Phone Support", "Custom Branding"]', 500, 250, 100, 10, 5, 1),
+('Enterprise Monthly', 'monthly', 4999.00, '["All Professional Features", "Multi-user Access", "API Access", "Priority Support", "Custom Integrations"]', 2000, 1000, 500, 50, 20, 0),
+('Starter Yearly', 'yearly', 9999.00, '["Lead Management", "Quote Generation", "Basic Reports", "Email Support", "2 Months Free"]', 100, 50, 25, 3, 1, 0),
+('Professional Yearly', 'yearly', 19999.00, '["All Starter Features", "Invoice Management", "Advanced Analytics", "Phone Support", "Custom Branding", "2 Months Free"]', 500, 250, 100, 10, 5, 1),
+('Enterprise Yearly', 'yearly', 49999.00, '["All Professional Features", "Multi-user Access", "API Access", "Priority Support", "Custom Integrations", "2 Months Free"]', 2000, 1000, 500, 50, 20, 0);
+
+-- Insert default settings with static contact information
 INSERT INTO settings (setting_key, setting_value) VALUES
-('company_name', ''),
-('company_address', ''),
-('company_phone1', ''),
-('company_phone2', ''),
-('company_email', ''),
-('company_website', ''),
-('company_tagline', ''),
+('company_name', 'PackersAnMovers'),
+('company_address', 'Shop No. 04, Vrindavan Society Shankara nagar, Dombivli East, Thane, Maharashtra 421203'),
+('company_phone1', '+91 7710020974'),
+('company_phone2', '+91 7710020975'),
+('company_email', 'support@packersanmovers.com'),
+('company_website', 'https://www.packersanmovers.com'),
+('company_tagline', 'Professional Moving & Packing Services'),
 ('gst_number', ''),
 ('facebook_url', ''),
 ('twitter_url', ''),
 ('instagram_url', ''),
 ('linkedin_url', ''),
-('website_name', ''),
-('website_url', ''),
-('support_emails', ''),
+('website_name', 'PackersAnMovers'),
+('website_url', 'https://www.packersanmovers.com'),
+('support_emails', 'support@packersanmovers.com'),
 ('mail_host', ''),
 ('mail_port', '587'),
 ('mail_username', ''),
 ('mail_password', ''),
-('mail_from', '');
+('mail_from', 'support@packersanmovers.com'),
+('saas_enabled', '1'),
+('trial_period_days', '14'),
+('cashfree_client_id', 'CF_PLACEHOLDER_CLIENT_ID'),
+('cashfree_client_secret', 'CF_PLACEHOLDER_SECRET'),
+('cashfree_environment', 'sandbox');
