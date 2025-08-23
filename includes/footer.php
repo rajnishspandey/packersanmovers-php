@@ -17,6 +17,7 @@
                         <li><a href="/quote" class="text-white">Get a Quote</a></li>
                         <li><a href="/privacy-policy" class="text-white">Privacy Policy</a></li>
                         <li><a href="/terms-of-service" class="text-white">Terms of Service</a></li>
+                        <li><a href="/terms-of-service#refund-policy" class="text-white">Refund & Cancellation Policy</a></li>
                         <li><a href="/disclaimer" class="text-white">Disclaimer</a></li>
                         <li><a href="/cookie-policy" class="text-white">Cookie Policy</a></li>
                     </ul>
