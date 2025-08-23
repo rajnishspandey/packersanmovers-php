@@ -25,9 +25,9 @@
                 <div class="col-md-4">
                     <h5>Contact Info</h5>
                     <address>
-                        <i class="fas fa-map-marker-alt me-2"></i><?php echo get_setting('company_address', 'Address not configured'); ?><br>
-                        <i class="fas fa-phone me-2"></i><?php echo get_setting('company_phone1', 'Phone not configured'); ?><?php if(get_setting('company_phone2')): ?> / <?php echo get_setting('company_phone2'); ?><?php endif; ?><br>
-                        <i class="fas fa-envelope me-2"></i><?php echo get_setting('company_email', 'Email not configured'); ?>
+                        <i class="fas fa-map-marker-alt me-2"></i>Shop No. 04, Vrindavan Society Shankara nagar, Dombivli East, Thane, Maharashtra 421203<br>
+                        <i class="fas fa-phone me-2"></i>+91 7710020974 / +91 7710020975<br>
+                        <i class="fas fa-envelope me-2"></i>support@packersanmovers.com
                     </address>
                     <div class="social-icons">
                         <?php $facebook_url = get_setting('facebook_url'); if($facebook_url && $facebook_url != '#'): ?>
