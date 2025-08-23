@@ -65,7 +65,7 @@ include 'includes/header.php';
                         <li>Illegal items</li>
                     </ul>
                     
-                    <h2>8. Cancellation and Refund Policy</h2>
+                    <h2 id="refund-policy">8. Cancellation and Refund Policy</h2>
                     
                     <h3>8.1 Service Cancellation</h3>
                     <ul>
