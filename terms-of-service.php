@@ -65,11 +65,48 @@ include 'includes/header.php';
                         <li>Illegal items</li>
                     </ul>
                     
-                    <h2>8. Cancellation Policy</h2>
+                    <h2>8. Cancellation and Refund Policy</h2>
+                    
+                    <h3>8.1 Service Cancellation</h3>
                     <ul>
-                        <li>Cancellations must be made at least 48 hours before scheduled service</li>
-                        <li>Cancellation fees may apply</li>
-                        <li>Weather-related cancellations will be rescheduled without penalty</li>
+                        <li><strong>More than 72 hours before service:</strong> Full refund of advance payment minus 5% processing fee</li>
+                        <li><strong>48-72 hours before service:</strong> 80% refund of advance payment</li>
+                        <li><strong>24-48 hours before service:</strong> 50% refund of advance payment</li>
+                        <li><strong>Less than 24 hours before service:</strong> No refund (may be rescheduled once)</li>
+                        <li><strong>Weather-related cancellations:</strong> Full refund or free rescheduling</li>
+                        <li><strong>Company-initiated cancellation:</strong> 100% refund plus 10% compensation</li>
+                    </ul>
+                    
+                    <h3>8.2 Refund Process</h3>
+                    <ul>
+                        <li>Refund requests must be submitted in writing via email or through our website</li>
+                        <li>Processing time: 7-14 business days from approval date</li>
+                        <li>Refunds will be processed to the original payment method</li>
+                        <li>Bank transfer refunds may take 3-5 additional business days</li>
+                        <li>Processing fees and third-party charges are non-refundable</li>
+                    </ul>
+                    
+                    <h3>8.3 Service-Related Refunds</h3>
+                    <ul>
+                        <li><strong>Damage to goods:</strong> Compensation as per insurance coverage terms</li>
+                        <li><strong>Delayed delivery:</strong> 5% refund per day of delay (max 25%)</li>
+                        <li><strong>Incomplete service:</strong> Prorated refund for undelivered services</li>
+                        <li><strong>Unsatisfactory service:</strong> Case-by-case review and potential partial refund</li>
+                    </ul>
+                    
+                    <h3>8.4 Non-Refundable Services</h3>
+                    <ul>
+                        <li>Survey and assessment fees (if service is not booked)</li>
+                        <li>Storage charges (if items are abandoned after 30 days)</li>
+                        <li>Additional services requested during the move</li>
+                        <li>Third-party services arranged on customer's behalf</li>
+                    </ul>
+                    
+                    <h3>8.5 Dispute Resolution</h3>
+                    <ul>
+                        <li>Refund disputes will be addressed within 48 hours of request</li>
+                        <li>Independent mediation available for unresolved disputes</li>
+                        <li>Consumer forum complaints will be handled as per Indian law</li>
                     </ul>
                     
                     <h2>9. Force Majeure</h2>
