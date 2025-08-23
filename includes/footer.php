@@ -54,14 +54,14 @@
 
     <!-- Floating WhatsApp Button -->
     <div class="whatsapp-float">
-        <a href="https://wa.me/<?php echo str_replace(['+', ' ', '-'], '', get_setting('company_phone1', '917710020974')); ?>?text=Hi, I need help with packers and movers service" target="_blank">
+        <a href="https://wa.me/917710020974?text=Hi, I need help with packers and movers service" target="_blank">
             <i class="fab fa-whatsapp"></i>
         </a>
     </div>
 
     <!-- Floating Call Button (Mobile/Tablet only) -->
     <div class="call-float">
-        <a href="tel:<?php echo get_setting('company_phone1', '+917710020974'); ?>">
+        <a href="tel:+917710020974">
             <i class="fas fa-phone"></i>
         </a>
     </div>
