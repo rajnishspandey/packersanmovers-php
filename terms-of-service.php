@@ -130,7 +130,7 @@ include 'includes/header.php';
                     <h2>13. Modifications</h2>
                     <p>We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting on our website.</p>
                     
-                    <h2>13. Contact Information</h2>
+                    <h2>14. Contact Information</h2>
                     <p>For questions about these terms, contact us:</p>
                     <ul>
                         <li>Email: <?php echo get_setting('company_email', 'Email not configured'); ?></li>
