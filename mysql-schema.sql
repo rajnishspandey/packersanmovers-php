@@ -188,6 +188,18 @@ INSERT INTO statuses (entity_type, status_key, status_label, status_color, sort_
 INSERT INTO users (username, email, password_hash, role, is_admin) VALUES
 ('admin', 'admin@packersanmovers.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 1);
 
+-- User Tokens table for temporary access
+CREATE TABLE user_tokens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) UNIQUE NOT NULL,
+    token_type VARCHAR(50) NOT NULL DEFAULT 'trial_access',
+    expires_at TIMESTAMP NOT NULL,
+    used_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Cashfree Orders table for payment tracking
 CREATE TABLE cashfree_orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
